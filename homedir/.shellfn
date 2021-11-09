@@ -126,3 +126,7 @@ function fo() {
   IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
+
+function kj() {
+  kubectl exec -it $(kubectl get pod | grep $1 | cut -f1 -d' ') -- ${@:2}
+}

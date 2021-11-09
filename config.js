@@ -58,10 +58,11 @@ module.exports = {
     //'comicbooklover',
     //'diffmerge',
     'docker', // docker for mac
-    //'dropbox',
+    'dropbox',
     //'evernote',
     'flux',
     'gpg-suite',
+    'google-chrome',
     //'ireadfast',
     'iterm2',
     'little-snitch',
@@ -72,10 +73,16 @@ module.exports = {
     'sizeup',
     //'sketchup',
     'slack',
-    // 'the-unarchiver',
+    'the-unarchiver',
     //'torbrowser',
-    //'transmission',
+    'postico',
+    'spotify',
+    'whatsapp',
+    'toggl-track',
+    'transmission',
+    'transmission-remote-guid',
     'visual-studio-code',
+    'rectangle',
     //'vlc',
     'xquartz'
   ],
@@ -91,12 +98,13 @@ module.exports = {
     'npm-check-updates',
     'prettyjson',
     'trash',
-    'vtop'
+    'vtop',
+    'rebase-editor',
     // ,'yo'
   ],
   mas: [
     //com.apple.dt.Xcode (10.2.1)
-    '497799835',
+    // '497799835',
     //com.if.Amphetamine (4.1.6)
     //'937984704',
     //net.shinyfrog.bear (1.6.15)

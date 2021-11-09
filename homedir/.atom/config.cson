@@ -1,0 +1,31 @@
+"*":
+  "atom-package-deps":
+    ignored: []
+  core:
+    closeDeletedFileTabs: true
+    telemetryConsent: "limited"
+  editor:
+    invisibles: {}
+    scrollPastEnd: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "09c44635-594f-dea4-cd37-725eb1eb35ef"
+  "git-blame":
+    columnWidth: 307
+  "linter-rubocop":
+    disableWhenNoConfigFile: true
+  "linter-ui-default": {}
+  "markdown-preview":
+    useGitHubStyle: true
+  minimap:
+    plugins:
+      pigments: true
+      pigmentsDecorationsZIndex: 0
+  "rails-open-rspec":
+    splitPane: false
+  "tidy-tabs":
+    modifiedThreshold: 30
+    runOnSave: true
+  "tree-view": {}
+  welcome:
+    showOnStartup: false

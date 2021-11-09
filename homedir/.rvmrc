@@ -1,0 +1,3 @@
+rvm_autoupdate_flag=2
+export rvm_ignore_gemsets_flag=1
+rvm_auto_reload_flag=2

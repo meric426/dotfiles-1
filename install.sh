@@ -223,16 +223,12 @@ RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-
 require_brew ruby
 # set zsh as the user login shell
 CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
-if [[ "$CURRENTSHELL" != "/usr/local/bin/zsh" ]]; then
-  bot "setting newer homebrew zsh (/usr/local/bin/zsh) as your shell (password required)"
-  # sudo bash -c 'echo "/usr/local/bin/zsh" >> /etc/shells'
-  # chsh -s /usr/local/bin/zsh
-  sudo dscl . -change /Users/$USER UserShell $SHELL /usr/local/bin/zsh > /dev/null 2>&1
+if [[ "$CURRENTSHELL" != "/bin/zsh" ]]; then
+  bot "setting newer homebrew zsh (/bin/zsh) as your shell (password required)"
+  # sudo bash -c 'echo "/bin/zsh" >> /etc/shells'
+  # chsh -s /bin/zsh
+  sudo dscl . -change /Users/$USER UserShell $SHELL /bin/zsh > /dev/null 2>&1
   ok
-fi
-
-if [[ ! -d "./oh-my-zsh/custom/themes/powerlevel9k" ]]; then
-  git clone https://github.com/bhilburn/powerlevel9k.git oh-my-zsh/custom/themes/powerlevel9k
 fi
 
 bot "Dotfiles Setup"
@@ -308,6 +304,22 @@ require_brew nvm
 
 # nvm
 require_nvm stable
+
+read -r -p "Install atom packages? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  bot "installing atom packages"
+  require_cask atom
+  apm install --packages-file homedir/.atom/packages.txt
+  ok
+fi
+
+read -r -p "Install RVM? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]];then
+  bot "installing RVM"
+  curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
+  rvm reinstall ruby-head --rubygems 2.6.11
+  ok
+fi
 
 #####################################
 # Now we can switch to node.js mode
@@ -1196,6 +1208,6 @@ for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
   killall "${app}" > /dev/null 2>&1
 done
 
-brew update && brew upgrade && brew cleanup 
+brew update && brew upgrade && brew cleanup
 
 bot "Woot! All done"

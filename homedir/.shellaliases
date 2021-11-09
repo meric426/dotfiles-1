@@ -105,3 +105,8 @@ alias k='kubectl'
 alias kp='kubectl get pods -o wide'
 alias kdp='kubectl describe pod'
 alias kdn='kubectl describe node'
+
+# git related aliases
+alias compare="hub compare"
+alias gs="git status"
+alias ggpull='git pull origin $(git_current_branch) --rebase'
