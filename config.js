@@ -1,8 +1,10 @@
 module.exports = {
   brew: [
+    'postgresql',
     // http://conqueringthecommandline.com/book/ack_ag
     'ack',
     'ag',
+    'awscli',
     // https://github.com/wting/autojump
     'autojump',
     // alternative to `cat`: https://github.com/sharkdp/bat
@@ -52,6 +54,7 @@ module.exports = {
   ],
   cask: [
     //'adium',
+    'aerial',
     //'amazon-cloud-drive',
     //'atom',
     // 'box-sync',
@@ -60,7 +63,7 @@ module.exports = {
     'docker', // docker for mac
     'dropbox',
     //'evernote',
-    'flux',
+    // 'flux',
     'gpg-suite',
     'google-chrome',
     //'ireadfast',

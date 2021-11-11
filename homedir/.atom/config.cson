@@ -3,6 +3,9 @@
     ignored: []
   core:
     closeDeletedFileTabs: true
+    disabledPackages: [
+      "markdown-preview"
+    ]
     telemetryConsent: "limited"
   editor:
     invisibles: {}
