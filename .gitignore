@@ -9,6 +9,9 @@ id_rsa
 img/*.backup.jpg
 # personal swap gitconfigs
 homedir/.gitconfig_*
+# machine-local overrides (live in ~, never tracked)
+homedir/.gitconfig.local
+homedir/.zshrc.local
 homedir/.vim/backup/*
 !homedir/.vim/backup/.gitignore
 homedir/.vim/temp/*

@@ -54,75 +54,26 @@ fi
 # ###########################################################
 # Git Config
 # ###########################################################
-bot "OK, now I am going to update the .gitconfig for your user info:"
-grep 'user = GITHUBUSER' ./homedir/.gitconfig > /dev/null 2>&1
-if [[ $? = 0 ]]; then
-    read -r -p "What is your git username? " githubuser
-
-  fullname=`osascript -e "long user name of (system info)"`
-
-  if [[ -n "$fullname" ]];then
-    lastname=$(echo $fullname | awk '{print $2}');
-    firstname=$(echo $fullname | awk '{print $1}');
+# git identity lives in ~/.gitconfig.local (untracked); the tracked
+# .gitconfig pulls it in via [include]
+if [[ ! -f ~/.gitconfig.local ]]; then
+  bot "Let's set up your git identity (stored in ~/.gitconfig.local, never committed):"
+  read -r -p "Your full name: " fullname
+  read -r -p "Your email: " email
+  read -r -p "Your github username: " githubuser
+  if [[ -z $fullname || -z $email ]]; then
+    error "name and email are required to configure git"
+    exit 1
   fi
-
-  if [[ -z $lastname ]]; then
-    lastname=`dscl . -read /Users/$(whoami) | grep LastName | sed "s/LastName: //"`
-  fi
-  if [[ -z $firstname ]]; then
-    firstname=`dscl . -read /Users/$(whoami) | grep FirstName | sed "s/FirstName: //"`
-  fi
-  email=`dscl . -read /Users/$(whoami)  | grep EMailAddress | sed "s/EMailAddress: //"`
-
-  if [[ ! "$firstname" ]]; then
-    response='n'
-  else
-    echo -e "I see that your full name is $COL_YELLOW$firstname $lastname$COL_RESET"
-    read -r -p "Is this correct? [Y|n] " response
-  fi
-
-  if [[ $response =~ ^(no|n|N) ]]; then
-    read -r -p "What is your first name? " firstname
-    read -r -p "What is your last name? " lastname
-  fi
-  fullname="$firstname $lastname"
-
-  bot "Great $fullname, "
-
-  if [[ ! $email ]]; then
-    response='n'
-  else
-    echo -e "The best I can make out, your email address is $COL_YELLOW$email$COL_RESET"
-    read -r -p "Is this correct? [Y|n] " response
-  fi
-
-  if [[ $response =~ ^(no|n|N) ]]; then
-    read -r -p "What is your email? " email
-    if [[ ! $email ]];then
-      error "you must provide an email to configure .gitconfig"
-      exit 1
-    fi
-  fi
-
-
-  running "replacing items in .gitconfig with your info ($COL_YELLOW$fullname, $email, $githubuser$COL_RESET)"
-
-  # test if gnu-sed or MacOS sed
-
-  sed -i "s/GITHUBFULLNAME/$firstname $lastname/" ./homedir/.gitconfig > /dev/null 2>&1 | true
-  if [[ ${PIPESTATUS[0]} != 0 ]]; then
-    echo
-    running "looks like you are using MacOS sed rather than gnu-sed, accommodating"
-    sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/" ./homedir/.gitconfig
-    sed -i '' 's/GITHUBEMAIL/'$email'/' ./homedir/.gitconfig
-    sed -i '' 's/GITHUBUSER/'$githubuser'/' ./homedir/.gitconfig
-    ok
-  else
-    echo
-    bot "looks like you are already using gnu-sed. woot!"
-    sed -i 's/GITHUBEMAIL/'$email'/' ./homedir/.gitconfig
-    sed -i 's/GITHUBUSER/'$githubuser'/' ./homedir/.gitconfig
-  fi
+  cat > ~/.gitconfig.local <<EOF
+[user]
+  name = $fullname
+  email = $email
+  signingkey = ~/.ssh/id_ed25519.pub
+[github]
+  user = $githubuser
+EOF
+  ok "wrote ~/.gitconfig.local"
 fi
 
 # ###########################################################
