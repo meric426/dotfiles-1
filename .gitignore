@@ -7,7 +7,6 @@ id_rsa
 .envrc
 # desktop image backups
 img/*.backup.jpg
-node_modules
 # personal swap gitconfigs
 homedir/.gitconfig_*
 homedir/.vim/backup/*
@@ -15,7 +14,3 @@ homedir/.vim/backup/*
 homedir/.vim/temp/*
 !homedir/.vim/temp/.gitignore
 homedir/.vim/.netrwhist
-homedir/.vim/bundle/*
-!homedir/.vim/bundle/.gitignore
-!homedir/.vim/bundle/Vundle.vim
-homedir/.atom/.atom-socket-secret*
