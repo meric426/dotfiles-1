@@ -137,18 +137,20 @@ if ! xcode-select --print-path &> /dev/null; then
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    # Wait until the XCode Command Line Tools are installed
-    until xcode-select --print-path &> /dev/null; do
+    # Wait until the XCode Command Line Tools are actually installed
+    # (xcode-select --print-path succeeds as soon as the directory exists,
+    # before the install finishes, so probe for a binary instead)
+    until [ -x /Library/Developer/CommandLineTools/usr/bin/git ]; do
         sleep 5
     done
 
     print_result $? ' XCode Command Line Tools Installed'
 
-    # Prompt user to agree to the terms of the Xcode license
-    # https://github.com/alrra/dotfiles/issues/10
-
-    sudo xcodebuild -license
-    print_result $? 'Agree with the XCode Command Line Tools licence'
+    # xcodebuild only exists with full Xcode, not the Command Line Tools
+    if [ -d /Applications/Xcode.app ]; then
+        sudo xcodebuild -license accept
+        print_result $? 'Agree with the XCode licence'
+    fi
 
 fi
 
@@ -156,43 +158,41 @@ fi
 # install homebrew (CLI Packages)
 # ###########################################################
 running "checking homebrew..."
-brew_bin=$(which brew) 2>&1 > /dev/null
-if [[ $? != 0 ]]; then
+if [[ ! -x /opt/homebrew/bin/brew && ! -x /usr/local/bin/brew ]]; then
   action "installing homebrew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  if [[ $? != 0 ]]; then
+  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
     error "unable to install homebrew, script $0 abort!"
     exit 2
   fi
-  brew analytics off
+fi
+# make brew available in this shell (Apple Silicon installs to /opt/homebrew)
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 else
-  ok
-  bot "Homebrew"
-  read -r -p "run brew update && upgrade? [y|N] " response
-  if [[ $response =~ (y|yes|Y) ]]; then
-    action "updating homebrew..."
-    brew update
-    ok "homebrew updated"
-    action "upgrading brew packages..."
-    brew upgrade
-    ok "brews upgraded"
-  else
-    ok "skipped brew package upgrades."
-  fi
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+brew analytics off
+ok
+bot "Homebrew"
+read -r -p "run brew update && upgrade? [y|N] " response
+if [[ $response =~ (y|yes|Y) ]]; then
+  action "updating homebrew..."
+  brew update
+  ok "homebrew updated"
+  action "upgrading brew packages..."
+  brew upgrade
+  ok "brews upgraded"
+else
+  ok "skipped brew package upgrades."
 fi
 
-# Just to avoid a potential bug
-mkdir -p ~/Library/Caches/Homebrew/Formula
-brew doctor
+# ###########################################################
+# install all packages, casks, and App Store apps
+# ###########################################################
+bot "installing everything from the Brewfile (this may take a while)..."
+brew bundle --file=./Brewfile
+ok
 
-# skip those GUI clients, git command-line all the way
-require_brew git
-# update zsh to latest
-require_brew zsh
-# update ruby to latest
-# use versions of packages installed with homebrew
-RUBY_CONFIGURE_OPTS="--with-openssl-dir=`brew --prefix openssl` --with-readline-dir=`brew --prefix readline` --with-libyaml-dir=`brew --prefix libyaml`"
-require_brew ruby
 # set zsh as the user login shell
 CURRENTSHELL=$(dscl . -read /Users/$USER UserShell | awk '{print $2}')
 if [[ "$CURRENTSHELL" != "/bin/zsh" ]]; then
@@ -231,36 +231,11 @@ if [[ $response =~ (y|yes|Y) ]]; then
   popd > /dev/null 2>&1
 fi
 
-bot "VIM Setup"
-read -r -p "Do you want to install vim plugins now? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-  bot "Installing vim plugins"
-  # cmake is required to compile vim bundle YouCompleteMe
-  # require_brew cmake
-  vim +PluginInstall +qall > /dev/null 2>&1
-  ok
-else
-  ok "skipped. Install by running :PluginInstall within vim"
-fi
-
-
-read -r -p "Install fonts? [y|N] " response
+read -r -p "Install fonts bundled in this repo? [y|N] " response
 if [[ $response =~ (y|yes|Y) ]];then
   bot "installing fonts"
-  # need fontconfig to install/build fonts
-  require_brew fontconfig
+  # font-* casks come from the Brewfile; this copies the fonts vendored in ./fonts
   ./fonts/install.sh
-  brew tap homebrew/cask-fonts
-  require_brew svn #required for roboto
-  require_cask font-fontawesome
-  require_cask font-awesome-terminal-fonts
-  require_cask font-hack
-  require_cask font-inconsolata-dz-for-powerline
-  require_cask font-inconsolata-g-for-powerline
-  require_cask font-inconsolata-for-powerline
-  require_cask font-roboto-mono
-  require_cask font-roboto-mono-for-powerline
-  require_cask font-source-code-pro
   ok
 fi
 
@@ -271,46 +246,15 @@ fi
 #   ok
 # fi
 
-# node version manager
-require_brew nvm
-
-# nvm
+# nvm (installed via Brewfile)
 require_nvm stable
 
-read -r -p "Install atom packages? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-  bot "installing atom packages"
-  require_cask atom
-  apm install --packages-file homedir/.atom/packages.txt
-  ok
-fi
-
-read -r -p "Install RVM? [y|N] " response
-if [[ $response =~ (y|yes|Y) ]];then
-  bot "installing RVM"
-  curl -sSL https://get.rvm.io | bash -s -- --ignore-dotfiles
-  rvm reinstall ruby-head --rubygems 2.6.11
-  ok
-fi
-
-#####################################
-# Now we can switch to node.js mode
-# for better maintainability and
-# easier configuration via
-# JSON files and inquirer prompts
-#####################################
-
-bot "installing npm tools needed to run this project..."
-npm install
-ok
-
-bot "installing packages from config.js..."
-node index.js
+bot "installing global npm tools..."
+npm install -g yarn @angular/cli esbuild @webos-tools/cli lgtv2
 ok
 
 running "cleanup homebrew"
-brew cleanup --force > /dev/null 2>&1
-rm -f -r /Library/Caches/Homebrew/* > /dev/null 2>&1
+brew cleanup > /dev/null 2>&1
 ok
 
 bot "OS Configuration"
@@ -381,9 +325,6 @@ sudo systemsetup -setremoteappleevents off
 
 # Disable remote login
 sudo systemsetup -setremotelogin off
-
-# Disable wake-on modem
-sudo systemsetup -setwakeonmodem off
 
 # Disable wake-on LAN
 sudo systemsetup -setwakeonnetworkaccess off
@@ -531,17 +472,8 @@ sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.serve
 ################################################
 bot "Standard System Changes"
 ################################################
-running "always boot in verbose mode (not MacOS GUI mode)"
-sudo nvram boot-args="-v";ok
-
-running "allow 'locate' command"
-sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist > /dev/null 2>&1;ok
-
 running "Set standby delay to 24 hours (default is 1 hour)"
-sudo pmset -a standbydelay 86400;ok
-
-running "Disable the sound effects on boot"
-sudo nvram SystemAudioVolume=" ";ok
+sudo pmset -a standbydelaylow 86400 standbydelayhigh 86400;ok
 
 running "Menu bar: disable transparency"
 defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false;ok
@@ -590,7 +522,6 @@ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true;ok
 running "Disable the “Are you sure you want to open this application?” dialog"
 defaults write com.apple.LaunchServices LSQuarantine -bool false;ok
 
-# https://github.com/atomantic/dotfiles/issues/30#issuecomment-514589462
 #running "Remove duplicates in the “Open With” menu (also see 'lscleanup' alias)"
 #/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user;ok
 
@@ -1043,7 +974,7 @@ defaults write com.googlecode.iterm2 HotkeyCode -int 50;
 defaults write com.googlecode.iterm2 FocusFollowsMouse -int 0;
 defaults write com.googlecode.iterm2 HotkeyModifiers -int 262401;
 running "Make iTerm2 load new tabs in the same directory"
-/usr/libexec/PlistBuddy -c "set \"New Bookmarks\":0:\"Custom Directory\" Recycle" ~/Library/Preferences/com.googlecode.iterm2.plist
+[ -f ~/Library/Preferences/com.googlecode.iterm2.plist ] && /usr/libexec/PlistBuddy -c "set \"New Bookmarks\":0:\"Custom Directory\" Recycle" ~/Library/Preferences/com.googlecode.iterm2.plist
 running "setting fonts"
 defaults write com.googlecode.iterm2 "Normal Font" -string "Hack-Regular 12";
 defaults write com.googlecode.iterm2 "Non Ascii Font" -string "Hack-Regular 12";
