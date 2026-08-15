@@ -11,9 +11,7 @@ You don't need to install or configure anything upfront! This works with a brand
 - [Watch me run!](#watch-me-run)
 - [Installation](#installation)
   - [Restoring Dotfiles](#restoring-dotfiles)
-- [3.x.x+ Upgrade Instructions!](#3xx-upgrade-instructions)
 - [Additional](#additional)
-  - [VIM as IDE](#vim-as-ide)
   - [Crontab](#crontab)
   - [Remap Caps-Lock](#remap-caps-lock)
 - [Settings](#settings)
@@ -35,12 +33,7 @@ You don't need to install or configure anything upfront! This works with a brand
   - [Messages](#messages)
   - [SizeUp.app](#sizeupapp)
 - [Software Installation](#software-installation)
-  - [Utilities](#utilities)
-  - [Apps](#apps)
-  - [NPM Global Modules](#npm-global-modules)
 - [License](#license)
-- [Contributions](#contributions)
-- [Loathing, Mehs and Praise](#loathing-mehs-and-praise)
 - [¯\\_(ツ)_/¯ Warning / Liability](#%C2%AF%5C%5C_%E3%83%84_%C2%AF-warning--liability)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -125,14 +118,11 @@ The following will only happen if you agree on the prompt
 - Enable firewall
 - Enable firewall stealth mode (no response to ICMP / ping requests)
 - Disable remote apple events
-- Disable wake-on modem
 - Disable wake-on LAN
 - Disable guest account login
 
 ## General System Changes
 
-- always boot in verbose mode (not MacOS GUI mode)
-- Disable the sound effects on boot
 - Menu bar: disable transparency
 - Menu bar: hide the Time Machine, Volume, User, and Bluetooth icons
 - Set highlight color to green
@@ -141,7 +131,6 @@ The following will only happen if you agree on the prompt
 - Increase window resize speed for Cocoa applications
 - Expand save panel by default
 - Expand print panel by default
-- allow 'locate' command
 - Set standby delay to 24 hours (default is 1 hour)
 - Save to disk (not to iCloud) by default
 - Automatically quit printer app once the print jobs complete
