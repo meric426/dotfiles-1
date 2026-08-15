@@ -22,6 +22,7 @@ You don't need to install or configure anything upfront! This works with a brand
   - [Finder Configs](#finder-configs)
   - [Dock & Dashboard](#dock--dashboard)
   - [Configuring Hot Corners](#configuring-hot-corners)
+  - [Configuring Mail](#configuring-mail)
   - [Spotlight](#spotlight)
   - [iTerm2](#iterm2)
   - [Time Machine](#time-machine)
@@ -211,6 +212,17 @@ The following will only happen if you agree on the prompt
 - Bottom right screen corner → Start screen saver
 
 - Add a context menu item for showing the Web Inspector in web views
+
+## Configuring Mail
+
+> Requires the terminal running install.sh to have Full Disk Access
+
+- Disable send and reply animations in Mail.app
+- Copy email addresses as 'foo@example.com' instead of 'Foo Bar <foo@example.com>' in Mail.app
+- Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
+- Display emails in threaded mode, sorted by date (oldest at the top)
+- Disable inline attachments (just show the icons)
+- Disable automatic spell checking
 
 ## Spotlight
 

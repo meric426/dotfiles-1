@@ -753,8 +753,32 @@ defaults write com.apple.dock wvous-br-modifier -int 0;ok
 running "Add a context menu item for showing the Web Inspector in web views"
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true;ok
 
-# Mail defaults are TCC-protected since Monterey; writing com.apple.mail
-# from a script silently no-ops, so those tweaks were removed
+###############################################################################
+bot "Configuring Mail"
+###############################################################################
+# NOTE: Mail prefs are TCC-protected since Monterey — these only take effect
+# if the terminal running this script has Full Disk Access
+
+running "Disable send and reply animations in Mail.app"
+defaults write com.apple.mail DisableReplyAnimations -bool true
+defaults write com.apple.mail DisableSendAnimations -bool true;ok
+
+running "Copy email addresses as 'foo@example.com' instead of 'Foo Bar <foo@example.com>' in Mail.app"
+defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false;ok
+
+running "Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app"
+defaults write com.apple.mail NSUserKeyEquivalents -dict-add "Send" -string "@\\U21a9";ok
+
+running "Display emails in threaded mode, sorted by date (oldest at the top)"
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "DisplayInThreadedMode" -string "yes"
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortedDescending" -string "yes"
+defaults write com.apple.mail DraftsViewerAttributes -dict-add "SortOrder" -string "received-date";ok
+
+running "Disable inline attachments (just show the icons)"
+defaults write com.apple.mail DisableInlineAttachmentViewing -bool true;ok
+
+running "Disable automatic spell checking"
+defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnabled";ok
 
 ###############################################################################
 bot "Spotlight"
@@ -951,7 +975,7 @@ open /Applications/iTerm.app
 ###############################################################################
 bot "OK. Note that some of these changes require a logout/restart to take effect. Killing affected applications (so they can reboot)...."
 for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-  "Dock" "Finder" "Messages" "SystemUIServer" "Terminal"; do
+  "Dock" "Finder" "Mail" "Messages" "SystemUIServer" "Terminal"; do
   killall "${app}" > /dev/null 2>&1
 done
 
