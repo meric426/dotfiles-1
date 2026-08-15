@@ -41,7 +41,7 @@ for file in .*; do
   fi
 
   if [[ -e ./$file ]]; then
-      mv ./$file ./
+      mv ./$file ~/$file
       echo -en "$1 backup restored";ok
   fi
   echo -en '\done';ok

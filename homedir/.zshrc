@@ -24,6 +24,7 @@ source $ZSH/oh-my-zsh.sh
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+[ ! -s "$NVM_DIR/nvm.sh" ] && [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh" # brew-installed nvm
 
 autoload -U add-zsh-hook
 
@@ -46,15 +47,17 @@ load-nvmrc() {
   fi
 }
 
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+if command -v nvm >/dev/null; then
+  add-zsh-hook chpwd load-nvmrc
+  load-nvmrc
+fi
 
-eval "$(direnv hook zsh)"
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 
 # Customize to your needs...
 unsetopt correct
 
-eval "$(/Users/meric426/projects/hemnet-terminal-command/bin/hemnet init - zsh)"
+[ -x "$HOME/projects/hemnet-terminal-command/bin/hemnet" ] && eval "$("$HOME/projects/hemnet-terminal-command/bin/hemnet" init - zsh)"
 
 # run fortune on new terminal :)
 # fortune
@@ -64,14 +67,14 @@ export PATH="/opt/homebrew/opt/texinfo/bin:$PATH"
 # PS1='$(kube_ps1) '$PS1
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/meric426/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/meric426/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/meric426/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/meric426/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
-source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+[ -f "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc" ] && source "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 
-source "$HOME/.cargo/env"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # # pnpm
 # export PNPM_HOME="/Users/meric426/Library/pnpm"
@@ -86,17 +89,17 @@ export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$PATH:~/.rbenv/shims"
-eval "$(rbenv init - zsh)"
+command -v rbenv >/dev/null && eval "$(rbenv init - zsh)"
 
 export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+command -v jenv >/dev/null && eval "$(jenv init -)"
 
-export RUBYOPT="-r$HOME/.rubyopenssl_default_store.rb $RUBYOPT"
+[ -f "$HOME/.rubyopenssl_default_store.rb" ] && export RUBYOPT="-r$HOME/.rubyopenssl_default_store.rb $RUBYOPT"
 
-[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ "$TERM_PROGRAM" == "vscode" ]] && command -v code >/dev/null && . "$(code --locate-shell-integration-path zsh)"
 
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+command -v ng >/dev/null && source <(ng completion script)
 export PATH="$HOME/.local/bin:$PATH"
 
 alias cursor="open -a Cursor"
