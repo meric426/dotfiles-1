@@ -76,6 +76,11 @@ EOF
   ok "wrote ~/.gitconfig.local"
 fi
 
+# machine-local shell overrides, sourced at the end of .zshrc
+if [[ ! -f ~/.zshrc.local ]]; then
+  echo "# machine-local zsh config (sourced by ~/.zshrc, never committed)" > ~/.zshrc.local
+fi
+
 # ###########################################################
 # Install non-brew various tools (PRE-BREW Installs)
 # ###########################################################

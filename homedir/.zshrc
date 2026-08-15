@@ -104,3 +104,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 alias cursor="open -a Cursor"
 export EDITOR="code --wait"
+
+# machine-local overrides, never committed
+[ -f ~/.zshrc.local ] && source ~/.zshrc.local
