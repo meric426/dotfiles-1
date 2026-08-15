@@ -823,33 +823,14 @@ bot "Terminal & iTerm2"
 defaults write com.apple.terminal FocusFollowsMouse -bool false
 #defaults write org.x.X11 wm_ffm -bool true;ok
 
-running "Installing the Solarized Light theme for iTerm (opening file)"
-open "./configs/Solarized Light.itermcolors";ok
-running "Installing the Patched Solarized Dark theme for iTerm (opening file)"
-open "./configs/Solarized Dark Patch.itermcolors";ok
-
-running "Don’t display the annoying prompt when quitting iTerm"
-defaults write com.googlecode.iterm2 PromptOnQuit -bool false;ok
-running "hide tab title bars"
-defaults write com.googlecode.iterm2 HideTab -bool true;ok
-running "set system-wide hotkey to show/hide iterm with ^\`"
-defaults write com.googlecode.iterm2 Hotkey -bool true;ok
-running "hide pane titles in split panes"
-defaults write com.googlecode.iterm2 ShowPaneTitles -bool false;ok
-running "animate split-terminal dimming"
-defaults write com.googlecode.iterm2 AnimateDimming -bool true;ok
-defaults write com.googlecode.iterm2 HotkeyChar -int 96;
-defaults write com.googlecode.iterm2 HotkeyCode -int 50;
-defaults write com.googlecode.iterm2 FocusFollowsMouse -int 0;
-defaults write com.googlecode.iterm2 HotkeyModifiers -int 262401;
-running "Make iTerm2 load new tabs in the same directory"
-[ -f ~/Library/Preferences/com.googlecode.iterm2.plist ] && /usr/libexec/PlistBuddy -c "set \"New Bookmarks\":0:\"Custom Directory\" Recycle" ~/Library/Preferences/com.googlecode.iterm2.plist
-running "setting fonts"
-defaults write com.googlecode.iterm2 "Normal Font" -string "Hack-Regular 12";
-defaults write com.googlecode.iterm2 "Non Ascii Font" -string "Hack-Regular 12";
-ok
-running "reading iterm settings"
-defaults read -app iTerm > /dev/null 2>&1;
+# iTerm2 settings (hotkey, fonts, colors, etc.) live in the tracked plist at
+# configs/com.googlecode.iterm2.plist; update it with:
+#   defaults export com.googlecode.iterm2 configs/com.googlecode.iterm2.plist && plutil -convert xml1 configs/com.googlecode.iterm2.plist
+running "Make iTerm2 load its settings from ~/.dotfiles/configs"
+if [ -f ./configs/com.googlecode.iterm2.plist ]; then
+  defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.dotfiles/configs"
+  defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+fi
 ok
 
 ###############################################################################

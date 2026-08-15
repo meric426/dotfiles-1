@@ -74,7 +74,7 @@ cd ~/.dotfiles;
 ./install.sh
 ```
 
-- When it finishes, open iTerm and press `Command + ,` to open preferences. Under Profiles > Colors, select "Load Presets" and choose the `Solarized Dark Patch` scheme. If it isn't there for some reason, import it from `~/.dotfiles/configs` -- you may also need to select the `Hack` font and check the box for non-ascii font and set to `Roboto Mono For Powerline`
+- iTerm2 loads its settings (colors, fonts, hotkey) from `~/.dotfiles/configs/com.googlecode.iterm2.plist` automatically — no manual preference import needed
 - I've also found that you need to reboot before fast key repeat will be enabled
 
 > Note: running install.sh is idempotent. You can run it again and again as you add new features or software to the scripts!
@@ -227,17 +227,15 @@ The following will only happen if you agree on the prompt
 ## Spotlight
 
 - Disable Spotlight indexing for any volume that gets mounted and has not yet been indexed
-- Load new settings before rebuilding the index
 - Make sure indexing is enabled for the main volume
 
 ## iTerm2
 
-- Installing the Solarized Dark theme for iTerm
-- Don’t display the annoying prompt when quitting iTerm
-- Hide tab title bars
-- Set system-wide hotkey to show/hide iterm with ctrl+tick ( `^` + `)
-- Set normal font to Hack 12pt
-- Set non-ascii font to Roboto Mono for Powerline 12pt
+iTerm2 loads its settings (hotkey, fonts, Solarized colors, everything) from the tracked plist at `configs/com.googlecode.iterm2.plist`. To capture settings changes you make in iTerm2's preferences UI, re-export with:
+
+```bash
+defaults export com.googlecode.iterm2 configs/com.googlecode.iterm2.plist && plutil -convert xml1 configs/com.googlecode.iterm2.plist
+```
 
 ## Time Machine
 
