@@ -2,7 +2,6 @@
 .DS_Store
 .LSOverride
 ._*
-.git_template/hooks/disabled-pc
 id_rsa
 .envrc
 # desktop image backups

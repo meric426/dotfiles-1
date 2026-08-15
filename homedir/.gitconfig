@@ -164,7 +164,6 @@
   tool = vimdiff
 
 [init]
-  templatedir = ~/.dotfiles/.git_template
 	defaultBranch = main
 
 [merge]
