@@ -4,6 +4,7 @@
 ._*
 .git_template/hooks/disabled-pc
 id_rsa
+.envrc
 # desktop image backups
 img/*.backup.jpg
 node_modules
@@ -17,3 +18,4 @@ homedir/.vim/.netrwhist
 homedir/.vim/bundle/*
 !homedir/.vim/bundle/.gitignore
 !homedir/.vim/bundle/Vundle.vim
+homedir/.atom/.atom-socket-secret*

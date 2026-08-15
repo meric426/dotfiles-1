@@ -8,15 +8,17 @@
     ]
     telemetryConsent: "limited"
   editor:
+    fontSize: 12
     invisibles: {}
     scrollPastEnd: true
     showInvisibles: true
   "exception-reporting":
     userId: "09c44635-594f-dea4-cd37-725eb1eb35ef"
   "git-blame":
-    columnWidth: 307
+    columnWidth: 354
   "linter-rubocop":
     disableWhenNoConfigFile: true
+    useBundler: true
   "linter-ui-default": {}
   "markdown-preview":
     useGitHubStyle: true

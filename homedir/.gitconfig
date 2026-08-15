@@ -1,6 +1,7 @@
 [user]
   name = Martin Ericson
   email = martin@devbox.com
+	signingkey = /Users/meric426/.ssh/id_ed25519.pub
 [github]
   # https://github.com/blog/180-local-github-config
   user = meric426
@@ -47,7 +48,7 @@
   safecrlf = warn
   # prevent crlf (then you will have to deal with the problem -- dos2unix, etc)
   #safecrlf = true
-  editor = vim
+	editor = code --wait
   #editor = subl -w
 
 [sequence]
@@ -170,6 +171,7 @@
 
 [init]
   templatedir = ~/.dotfiles/.git_template
+	defaultBranch = main
 
 [merge]
     tool = vscode
@@ -201,8 +203,16 @@
   smudge = git media smudge %f
 
 [filter "lfs"]
-  clean = git-lfs clean %f
-  smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
   required = true
+	process = git-lfs filter-process
 [pull]
 	rebase = true
+[submodule]
+	recurse = true
+[commit]
+	verbose = true
+	gpgsign = true
+[gpg]
+	format = ssh
