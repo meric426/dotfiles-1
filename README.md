@@ -49,7 +49,7 @@ You don't need to install or configure anything upfront! This works with a brand
 
 Don't you hate getting a new laptop or joining a new team and then spending a whole day setting up your system preferences and tools? Me too. That's why we automate; we did it once and we don't want to have to do it again.
 
-\\[^_^]/ - This started as [Adam Eivy](http://adameivy.com)'s MacOS shell configuration dotfiles but has grown to a multi-developer platform for machine configuration.
+\\[^_^]/ - This started as Adam Eivy's MacOS shell configuration dotfiles, adapted and maintained for my own machines.
 
 When I finish with your machine, you will be able to look at your command-line in full-screen mode like this (running iTerm):
 
@@ -71,52 +71,30 @@ To launch fullscreen, hit `Command + Enter` in iTerm, then use `Command + d` and
 
 # Installation
 
-> Note: I recommend forking this repo in case you don't like anything I do and want to set your own preferences (and pull request them!)
-
 > ☢️ REVIEW WHAT THIS SCRIPT DOES PRIOR TO RUNNING
 > It's always a good idea to review arbitrary code from the internet before running it on your machine with sudo power!
 > You are responsible for everything this script does to your machine (see LICENSE)
 > The creator of this repo has a high tolerance for nuking his machine and starting over. If you have a low tolerance for this, proceed with caution.
 
 ```bash
-git clone --recurse-submodules https://github.com/atomantic/dotfiles ~/.dotfiles
+git clone --recurse-submodules https://github.com/meric426/dotfiles ~/.dotfiles
 cd ~/.dotfiles;
 # run this using terminal (not iTerm, lest iTerm settings get discarded on exit)
 ./install.sh
 ```
 
-- When it finishes, open iTerm and press `Command + ,` to open preferences. Under Profiles > Colors, select "Load Presets" and choose the `Solarized Dark Patch` scheme. If it isn't there for some reason, import it from `~/.dotfiles/configs` -- you may also need to select the `Hack` font and check the box for non-ascii font and set to `Roboto Mono For Powerline` (I've had mixed results for automating these settings--love a pull request that improves this)
+- When it finishes, open iTerm and press `Command + ,` to open preferences. Under Profiles > Colors, select "Load Presets" and choose the `Solarized Dark Patch` scheme. If it isn't there for some reason, import it from `~/.dotfiles/configs` -- you may also need to select the `Hack` font and check the box for non-ascii font and set to `Roboto Mono For Powerline`
 - I've also found that you need to reboot before fast key repeat will be enabled
 
-> Note: if you have problems cloning the submodules behind proxy, you can use this command to convert `git://` to `https://`: `git config --global url.https://github.com/.insteadOf git://github.com/`
-
-> Note: running install.sh is idempotent. You can run it again and again as you add new features or software to the scripts! I'll regularly add new configurations so keep an eye on this repo as it grows and optimizes.
+> Note: running install.sh is idempotent. You can run it again and again as you add new features or software to the scripts!
 
 ## Restoring Dotfiles
 
 If you have existing dotfiles for configuring git, zsh, vim, etc, these will be backed-up into `~/.dotfiles_backup/$(date +"%Y.%m.%d.%H.%M.%S")` and replaced with the files from this project. You can restore your original dotfiles by using `./restore.sh $RESTOREDATE` where `$RESTOREDATE` is the date folder name you want to restore.
 
-> The restore script does not currently restore system settings--only your original dotfiles. To restore system settings, you'll need to manually undo what you don't like (so don't forget to fork, review, tweak)
-
-# 3.x.x+ Upgrade Instructions!
-
-`3.0.0` brings huge changes. If you have made any modifications (and didn't make your own fork), you will want to backup your dotfiles prior to running `git-up` or `git pull` on `~/.dotfiles`.
-
-Do the following to upgrade your ~/.dotfiles safely:
-
-1. backup your dotfiles: `cp -R ~/.dotfiles ~/.dotfiles_old`
-2. `cd ~/.dotfiles`
-3. update dotfiles: `git up` or `git pull`
-4. remove old submodule location: `rm -rf .vim` (now lives in `homedir/.vim`)
-5. inspect `install.sh` and `config.js` to make sure all the software you want is installed
-6. inspect `homedir/*` for any changes you want to port from `./dotfiles_old`
-7. run `install.sh` again
+> The restore script does not currently restore system settings--only your original dotfiles. To restore system settings, you'll need to manually undo what you don't like.
 
 # Additional
-
-## VIM as IDE
-
-I am moving away from using `Atom` and instead using `vim` as my IDE. I use Vundle to manage vim plugins (instead of pathogen). Vundle is better in many ways and is compatible with pathogen plugins. Additionally, vundle will manage and install its own plugins so we don't have to use git submodules for all of them.
 
 ## Crontab
 
@@ -127,7 +105,7 @@ You can `cron ~/.crontab` if you want to add my nightly cron software updates.
 ## Remap Caps-Lock
 
 - I highly recommend remapping your Caps Lock key to Control per [Dr. Bunsen](http://www.drbunsen.org/remapping-caps-lock/):
-  ![Remap Caps Lock](https://raw.githubusercontent.com/atomantic/dotfiles/master/img/remap_capslock.png)
+  ![Remap Caps Lock](img/remap_capslock.png)
 
 # Settings
 
@@ -328,82 +306,11 @@ The following will only happen if you agree on the prompt
 
 # Software Installation
 
-homebrew, fontconfig, git, nvm (node + npm), and zsh (latest) are all installed inside the `install.sh` as foundational software for running this project.
-Additional software is configured in `config.js` and can be customized in your own fork/branch (you can change everything in your own fork/brance).
-The following is the software that I have set as default:
-
-## Utilities
-
-- ack
-- ag
-- coreutils
-- dos2unix
-- findutils
-- fortune
-- gawk
-- gifsicle
-- gnupg
-- gnu-sed
-- homebrew/dupes/grep
-- httpie
-- imagemagick (only if gitshots enabled)
-- imagesnap (only if gitshots enabled)
-- jq
-- mas
-- moreutils
-- nmap
-- openconnect
-- reattach-to-user-namespace
-- homebrew/dupes/screen
-- tmux
-- tree
-- ttyrec
-- vim --override-system-vi
-- watch
-- wget --enable-iri
-
-## Apps
-
-- box-sync
-- gpgtools
-- iterm2
-- sizeup
-- slack
-- the-unarchiver
-- xquartz
-
-## NPM Global Modules
-
-- antic
-- buzzphrase
-- eslint
-- gulp
-- instant-markdown-d
-- npm-check
-- prettyjson
-- trash
-- vtop
+`install.sh` installs the XCode Command Line Tools and Homebrew, then installs everything listed in the `Brewfile` via `brew bundle`: all formulae, casks (apps and fonts), and Mac App Store apps. Global npm tools are installed after nvm is set up. Edit the `Brewfile` to change what gets installed; regenerate it from the current machine with `brew bundle dump --force --file=Brewfile`.
 
 # License
 
-This project is licensed under ISC. Please fork, contribute and share.
-
-# Contributions
-
-Contributions are always welcome in the form of pull requests with explanatory comments.
-
-Please refer to the [Contributor Covenant](CODE_OF_CONDUCT.md)
-
-# Loathing, Mehs and Praise
-
-1. Loathing should be directed into pull requests that make it better. woot.
-2. Bugs with the setup should be put as GitHub issues.
-3. Mehs should be > /dev/null
-4. Praise should be directed to [![@antic](https://img.shields.io/twitter/follow/antic.svg?style=social&label=@antic)](https://twitter.com/antic)
-
-# Author
-
-More here: https://adameivy.com
+Based on [atomantic/dotfiles](https://github.com/atomantic/dotfiles); see LICENSE.md.
 
 # ¯\\_(ツ)_/¯ Warning / Liability
 
