@@ -145,6 +145,8 @@ brew "gobject-introspection"
 brew "librsvg"
 # Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
+# GNU implementation of the famous stream editor
+brew "gnu-sed"
 # GNU grep, egrep and fgrep
 brew "grep"
 # GNU Ubiquitous Intelligent Language for Extensions
