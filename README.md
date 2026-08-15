@@ -22,8 +22,6 @@ You don't need to install or configure anything upfront! This works with a brand
   - [Finder Configs](#finder-configs)
   - [Dock & Dashboard](#dock--dashboard)
   - [Configuring Hot Corners](#configuring-hot-corners)
-  - [Configuring Safari & WebKit](#configuring-safari--webkit)
-  - [Configuring Mail](#configuring-mail)
   - [Spotlight](#spotlight)
   - [iTerm2](#iterm2)
   - [Time Machine](#time-machine)
@@ -31,7 +29,6 @@ You don't need to install or configure anything upfront! This works with a brand
   - [Address Book, Dashboard, iCal, TextEdit, and Disk Utility](#address-book-dashboard-ical-textedit-and-disk-utility)
   - [Mac App Store](#mac-app-store)
   - [Messages](#messages)
-  - [SizeUp.app](#sizeupapp)
 - [Software Installation](#software-installation)
 - [License](#license)
 - [¯\\_(ツ)_/¯ Warning / Liability](#%C2%AF%5C%5C_%E3%83%84_%C2%AF-warning--liability)
@@ -123,8 +120,7 @@ The following will only happen if you agree on the prompt
 
 ## General System Changes
 
-- Menu bar: disable transparency
-- Menu bar: hide the Time Machine, Volume, User, and Bluetooth icons
+- Mute the startup chime
 - Set highlight color to green
 - Set sidebar icon size to medium
 - Always show scrollbars
@@ -134,12 +130,10 @@ The following will only happen if you agree on the prompt
 - Set standby delay to 24 hours (default is 1 hour)
 - Save to disk (not to iCloud) by default
 - Automatically quit printer app once the print jobs complete
-- Disable the “Are you sure you want to open this application?” dialog
 - Remove duplicates in the “Open With” menu (also see 'lscleanup' alias)
 - Display ASCII control characters using caret notation in standard text views
 - Disable the crash reporter
 - Set Help Viewer windows to non-floating mode
-- Reveal IP, hostname, OS, etc. when clicking clock in login window
 - Check for software updates daily, not just once per week
 - Disable smart quotes as they’re annoying when typing code
 - Disable smart dashes as they’re annoying when typing code
@@ -183,11 +177,9 @@ The following will only happen if you agree on the prompt
 - Enable spring loading for directories
 - Remove the spring loading delay for directories
 - Avoid creating .DS_Store files on network volumes
-- Disable disk image verification
 - Automatically open a new Finder window when a volume is mounted
 - Use list view in all Finder windows by default
 - Disable the warning before emptying the Trash
-- Empty Trash securely by default
 - Enable AirDrop over Ethernet and on unsupported Macs running Lion
 - Show the ~/Library folder
 - Expand the following File Info panes: “General”, “Open with”, and “Sharing & Permissions”
@@ -202,7 +194,6 @@ The following will only happen if you agree on the prompt
 - Show indicator lights for open applications in the Dock
 - Don’t animate opening applications from the Dock
 - Speed up Mission Control animations
-- Don’t group windows by application in Mission Control
 - Disable Dashboard
 - Don’t show Dashboard as a Space
 - Don’t automatically rearrange Spaces based on most recent use
@@ -219,33 +210,11 @@ The following will only happen if you agree on the prompt
 - Top right screen corner → Desktop
 - Bottom right screen corner → Start screen saver
 
-## Configuring Safari & WebKit
-
-- Set Safari’s home page to ‘about:blank’ for faster loading
-- Prevent Safari from opening ‘safe’ files automatically after downloading
-- Allow hitting the Backspace key to go to the previous page in history
-- Hide Safari’s bookmarks bar by default
-- Hide Safari’s sidebar in Top Sites
-- Disable Safari’s thumbnail cache for History and Top Sites
-- Enable Safari’s debug menu
-- Make Safari’s search banners default to Contains instead of Starts With
-- Remove useless icons from Safari’s bookmarks bar
-- Enable the Develop menu and the Web Inspector in Safari
 - Add a context menu item for showing the Web Inspector in web views
-
-## Configuring Mail
-
-- Disable send and reply animations in Mail.app
-- Copy email addresses as 'foo@example.com' instead of 'Foo Bar <foo@example.com>' in Mail.app
-- Add the keyboard shortcut ⌘ + Enter to send an email in Mail.app
-- Display emails in threaded mode, sorted by date (oldest at the top)
-- Disable inline attachments (just show the icons)
-- Disable automatic spell checking
 
 ## Spotlight
 
 - Disable Spotlight indexing for any volume that gets mounted and has not yet been indexed
-- Change indexing order and disable some file types from being indexed
 - Load new settings before rebuilding the index
 - Make sure indexing is enabled for the main volume
 
@@ -272,7 +241,6 @@ The following will only happen if you agree on the prompt
 
 ## Address Book, Dashboard, iCal, TextEdit, and Disk Utility
 
-- Enable the debug menu in Address Book
 - Enable Dashboard dev mode (allows keeping widgets on the desktop)
 - Use plain text mode for new TextEdit documents
 - Open and save files as UTF-8 in TextEdit
@@ -287,11 +255,6 @@ The following will only happen if you agree on the prompt
 
 - Disable automatic emoji substitution (i.e. use plain text smileys)
 - Disable smart quotes as it’s annoying for messages that contain code
-
-## SizeUp.app
-
-- Start SizeUp at login
-- Don’t show the preferences window on next start
 
 # Software Installation
 
